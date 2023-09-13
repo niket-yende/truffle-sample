@@ -13,14 +13,14 @@ contract MultiSigWallet {
 
     Transaction[] public transactions;
     mapping(uint => mapping(address => bool)) isConfirmed;
-    mapping(address => bool) isOnwer;
+    mapping(address => bool) isOwner;
 
     event TransactionSubmitted(uint _transactionId, address _sender, address _receiver, uint _amount);
     event TransactionConfirmed(uint _transactionId);
     event TransactionExecuted(uint _transactionId);
 
     modifier onlyOwner() {
-        require(isOnwer[msg.sender], 'Owner required');
+        require(isOwner[msg.sender], 'Owner required');
         _;
     }
 
@@ -30,9 +30,9 @@ contract MultiSigWallet {
 
         for (uint i = 0; i < _owners.length; i++) {
             require(_owners[i] != address(0), 'Invalid owner address');
-            require(!isOnwer[_owners[i]], 'Owner address already added');
+            require(!isOwner[_owners[i]], 'Owner address already added');
             owners.push(_owners[i]);
-            isOnwer[_owners[i]] = true;
+            isOwner[_owners[i]] = true;
         }
 
         requiredConfirmations = _requiredConfirmations;
@@ -42,20 +42,20 @@ contract MultiSigWallet {
         require(_to != address(0), 'Invalid receiver address');
         require(msg.value > 0, 'Transfer amount has to be greater than 0');
 
-        uint transactionId = transactions.length;
+        uint transactionId = transactions.length + 1;
         transactions.push(Transaction({to: _to, value: msg.value, executed: false}));
         emit TransactionSubmitted(transactionId, msg.sender, _to, msg.value);
     }
 
     function confirmTransaction(uint _transactionId) public onlyOwner {
-        require(_transactionId < transactions.length, 'Invalid transaction id');
+        require(_transactionId <= transactions.length, 'Invalid transaction id');
         require(!isConfirmed[_transactionId][msg.sender], 'Already confirmed by the owner');
         isConfirmed[_transactionId][msg.sender] = true;
         emit TransactionConfirmed(_transactionId);
     }
 
     function executeTransaction(uint _transactionId) public payable onlyOwner {
-        require(_transactionId < transactions.length, 'Invalid transaction id');
+        require(_transactionId <= transactions.length, 'Invalid transaction id');
         require(!transactions[_transactionId].executed, 'Transaction already executed');
         require(isTransactionConfirmed(_transactionId), 'Required confirmations not attained');
 
@@ -66,7 +66,7 @@ contract MultiSigWallet {
     }
 
     function isTransactionConfirmed(uint _transactionId) internal view returns (bool) {
-        require(_transactionId < transactions.length, 'Invalid transaction id');
+        require(_transactionId <= transactions.length, 'Invalid transaction id');
         uint confirmationCount;
         for (uint i = 0; i < owners.length; i++) {
             if(isConfirmed[_transactionId][owners[i]]) {
