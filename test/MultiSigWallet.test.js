@@ -55,4 +55,42 @@ contract('MultiSigWallet', (accounts) => {
         assert.equal(result._receiver, receiverAddress, 'Receiver address must match in the event');
     });
 
+    it('confirm transaction from an unauthorized account', async() => {
+        try {
+            await multiSigWallet.confirmTransaction(1, {from: accounts[5]});
+        } catch(error) {
+            assert.include(error.message, 'Owner required', 'Owner required for submitting transaction');    
+        }
+    });
+
+    it('check for invalid transactionId while confirming transaction', async() => {
+        try {
+            await multiSigWallet.confirmTransaction(5);
+        } catch(error) {
+            assert.include(error.message, 'Invalid transaction id', 'Provide a valid transaction id');
+        }
+    });
+
+    it('confirm transaction success case', async() => {
+        await multiSigWallet.confirmTransaction(1);
+
+        // Retrieve the emitted events
+        const events = await multiSigWallet.getPastEvents("TransactionConfirmed", {
+            fromBlock: 0,
+            toBlock: "latest",
+        });
+
+        const latestEvent = events[events.length - 1];
+        const result = latestEvent.returnValues;
+        
+        assert.equal(result._transactionId, '1', 'Transaction id must be 1');
+    });
+
+    it('check for invalid transactionId while confirming transaction', async() => {
+        try {
+            await multiSigWallet.confirmTransaction(1);
+        } catch(error) {
+            assert.include(error.message, 'Already confirmed by the owner', 'Transaction already confirmed by the owner');
+        }
+    });
 });
