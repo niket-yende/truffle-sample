@@ -56,12 +56,13 @@ contract MultiSigWallet {
 
     function executeTransaction(uint _transactionId) public payable onlyOwner {
         require(_transactionId <= transactions.length, 'Invalid transaction id');
-        require(!transactions[_transactionId].executed, 'Transaction already executed');
+        uint transactionIndex = _transactionId - 1;
+        require(!transactions[transactionIndex].executed, 'Transaction is already executed');
         require(isTransactionConfirmed(_transactionId), 'Required confirmations not attained');
 
-        (bool success,) = transactions[_transactionId].to.call{value: transactions[_transactionId].value}("");
+        (bool success,) = transactions[transactionIndex].to.call{value: transactions[transactionIndex].value}("");
         require(success, 'Transaction execution failed');
-        transactions[_transactionId].executed = true;
+        transactions[transactionIndex].executed = true;
         emit TransactionExecuted(_transactionId);
     }
 
