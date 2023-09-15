@@ -1,11 +1,11 @@
 name: unit-test
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
 
 jobs:
-  build:
+  unit-test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
