@@ -1,0 +1,21 @@
+{
+  "name": "truffle-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niket-yende/truffle-sample.git"
+  },
+  "keywords": [
+    "truffle",
+    "blockchain",
+    "solidity"
+  ],
+  "author": "Niket Yende (niket6@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/niket-yende/truffle-sample/issues"
+  },
+  "homepage": "https://github.com/niket-yende/truffle-sample#readme"
+}

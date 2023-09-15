@@ -17,10 +17,10 @@ jobs:
             node-version: 18.15.0
 
       - name: Install truffle & ganache
-        run: npm install truffle -g 
+        run: npm install -g truffle
       
-      - run: npm install ganache -g
-      - run: npm run ganache -p 7545
+      - run: npm install -g ganache
+      - run: npm run ganache --server.port="7545"
 
       - name: Run unit tests 
         run: truffle test
