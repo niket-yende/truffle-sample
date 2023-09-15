@@ -1,0 +1,26 @@
+name: unit-test
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up node 
+        uses: actions/setup-node@v1
+        with:
+            node-version: 18.15.0
+
+      - name: Install truffle & ganache
+        run: npm install truffle -g 
+      
+      - run: npm install ganache -g
+      - run: npm run ganache -p 7545
+
+      - name: Run unit tests 
+        run: truffle test
