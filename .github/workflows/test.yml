@@ -16,11 +16,17 @@ jobs:
         with:
             node-version: 18.15.0
 
-      - name: Install truffle & ganache
+      - name: Install truffle
         run: npm install -g truffle
       
-      - run: npm install -g ganache
-      - run: npm run ganache -p 7545
+      - name: Start Ganache
+        uses: trufflesuite/ganache-cli-action@v2
+        with:
+          version: 'latest'
+          port: 7545   
 
+      - name: Compile contracts
+        run: truffle compile
+            
       - name: Run unit tests 
         run: truffle test
