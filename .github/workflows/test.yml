@@ -20,7 +20,7 @@ jobs:
         run: npm install -g truffle
       
       - run: npm install -g ganache
-      - run: npm run ganache --server.port="7545"
+      - run: npm run ganache -p 7545
 
       - name: Run unit tests 
         run: truffle test
