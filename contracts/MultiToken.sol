@@ -12,7 +12,7 @@ contract MultiToken is Initializable, ERC1155Upgradeable, OwnableUpgradeable, Pa
     uint public tokenCount;
     mapping(uint => bool) private tokenMap;
 
-    event TokenMinted(address _owner, uint _id, uint _amount, bytes _data);
+    event MintedToken(address _owner, uint _id, uint _amount, bytes _data);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -48,7 +48,7 @@ contract MultiToken is Initializable, ERC1155Upgradeable, OwnableUpgradeable, Pa
         _mint(msg.sender, _id, _amount, _data);
         tokenMap[_id] = true;
         tokenCount++;
-        emit TokenMinted(msg.sender, _id, _amount, _data);
+        emit MintedToken(msg.sender, _id, _amount, _data);
         return tokenCount;
     }
 
