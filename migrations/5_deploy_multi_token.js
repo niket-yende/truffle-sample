@@ -14,7 +14,7 @@ module.exports = async function(deployer, network, accounts) {
   const owner = await multiToken.owner();
   console.log(`owner: ${owner}`);
   
-  await multiToken.setURI(metadataUri);
+  await multiToken.setURI(metadataUri, { from: owner });
   
   console.log("MultiToken contract deployed and initialized.");
 };
