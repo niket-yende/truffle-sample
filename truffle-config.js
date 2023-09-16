@@ -18,7 +18,7 @@
  *
  */
 
-// require('dotenv').config();
+require('dotenv').config();
 // const mnemonic = process.env["MNEMONIC"];
 // const infuraProjectId = process.env["INFURA_PROJECT_ID"];
  
