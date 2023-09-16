@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/niket-yende/truffle-sample/issues"
   },
-  "homepage": "https://github.com/niket-yende/truffle-sample#readme"
+  "homepage": "https://github.com/niket-yende/truffle-sample#readme",
+  "devDependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.9.3"
+  }
 }
