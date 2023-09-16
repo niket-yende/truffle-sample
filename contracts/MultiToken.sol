@@ -42,14 +42,12 @@ contract MultiToken is Initializable, ERC1155Upgradeable, OwnableUpgradeable, Pa
     function mint(uint256 _id, uint256 _amount, bytes memory _data)
         public
         onlyOwner
-        returns (uint)
     {
         require(!tokenMap[_id], "Token id already present");
         _mint(msg.sender, _id, _amount, _data);
         tokenMap[_id] = true;
         tokenCount++;
         emit MintedToken(msg.sender, _id, _amount, _data);
-        return tokenCount;
     }
 
     function mintBatch(address _to, uint256[] memory _ids, uint256[] memory _amounts, bytes memory _data)
