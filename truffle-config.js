@@ -64,12 +64,12 @@ module.exports = {
   compilers: {
     solc: {
       version: "0.8.19",      // Fetch exact version from solc-bin
-      settings: {
-        optimizer: {
-          enabled: true,
-          runs: 200
-        }
-      }
+      // settings: {
+      //   optimizer: {
+      //     enabled: true,
+      //     runs: 200
+      //   }
+      // }
     }
   }
 };
