@@ -2,10 +2,12 @@
 pragma solidity ^0.8.19;
 
 contract TestContract {
-    address private owner;
+    address private immutable owner;
     // making contract as singleton
-    bool private initialized;
-    uint internal balance;    
+    bool private immutable initialized;
+    uint internal balance;
+
+    event UpdateBalance(address _owner, uint _balance);
 
     constructor() {
         owner = msg.sender;
@@ -23,7 +25,9 @@ contract TestContract {
     }
 
     function setBalance(uint _balance) external onlyOnwer {
+        require(_balance > 0, "Balance must be greater than 0");
         balance = _balance;
+        emit UpdateBalance(msg.sender, _balance);
     }
 
     function getBalance() public view returns (uint) {

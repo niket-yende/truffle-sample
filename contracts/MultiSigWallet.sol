@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract MultiSigWallet is ReentrancyGuard{
     address[] public owners;
-    uint public requiredConfirmations;
+    uint public immutable requiredConfirmations;
 
     struct Transaction {
         address to;
@@ -63,7 +63,7 @@ contract MultiSigWallet is ReentrancyGuard{
         require(isTransactionConfirmed(_transactionId), 'Required confirmations not attained');
 
         transactions[transactionIndex].executed = true;
-        
+
         (bool success,) = transactions[transactionIndex].to.call{value: transactions[transactionIndex].value}("");
         require(success, 'Transaction execution failed');
         
@@ -72,7 +72,7 @@ contract MultiSigWallet is ReentrancyGuard{
 
     function isTransactionConfirmed(uint _transactionId) internal view returns (bool) {
         require(_transactionId <= transactions.length, 'Invalid transaction id');
-        uint confirmationCount;
+        uint confirmationCount = 0;
         for (uint i = 0; i < owners.length; i++) {
             if(isConfirmed[_transactionId][owners[i]]) {
                 confirmationCount++;
