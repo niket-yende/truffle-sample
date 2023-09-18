@@ -30,10 +30,26 @@ contract('ElementStore', (accounts) => {
         assert.equal(foundId, 1, 'First element added must have id 1');
     });
 
+    it('duplicate element cannot be added', async() => {
+        try {
+            await elementStore.addElement(web3.utils.utf8ToHex('Rice'), 0); 
+        } catch(error) {
+            assert.include(error.message, 'Unique element name required', 'Duplicate element name not allowed');
+        }
+    });
+
     it('check if the added element is present', async() => {
         const element = await elementStore.getElement(1);
         const elementName = web3.utils.hexToAscii(element.name);
         assert.include(elementName, 'Rice', 'Added element must be found');
+    });
+
+    it('existing element name cannot be used for update', async() => {
+        try {
+            await elementStore.updateElement(1, web3.utils.utf8ToHex('Rice'),  0);
+        } catch(error) {
+            assert.include(error.message, 'Unique element name required', 'Updated element name must be unique');
+        }
     });
 
     it('update the element by id', async() => {
@@ -50,6 +66,7 @@ contract('ElementStore', (accounts) => {
         assert.equal(type, 1, 'Updated type must be 1');
     });
 
+    
     it('remove the element by id', async() => {
         // Change the availability of element to false
         await elementStore.removeElement(1);
