@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-contract MultiSigWallet {
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+contract MultiSigWallet is ReentrancyGuard{
     address[] public owners;
     uint public requiredConfirmations;
 
@@ -54,15 +56,17 @@ contract MultiSigWallet {
         emit TransactionConfirmed(_transactionId);
     }
 
-    function executeTransaction(uint _transactionId) public payable onlyOwner {
+    function executeTransaction(uint _transactionId) public payable onlyOwner nonReentrant {
         require(_transactionId <= transactions.length, 'Invalid transaction id');
         uint transactionIndex = _transactionId - 1;
         require(!transactions[transactionIndex].executed, 'Transaction is already executed');
         require(isTransactionConfirmed(_transactionId), 'Required confirmations not attained');
 
+        transactions[transactionIndex].executed = true;
+        
         (bool success,) = transactions[transactionIndex].to.call{value: transactions[transactionIndex].value}("");
         require(success, 'Transaction execution failed');
-        transactions[transactionIndex].executed = true;
+        
         emit TransactionExecuted(_transactionId);
     }
 

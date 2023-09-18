@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/niket-yende/truffle-sample#readme",
   "devDependencies": {
+    "@openzeppelin/contracts": "^4.9.3",
     "@openzeppelin/contracts-upgradeable": "^4.9.3",
     "@openzeppelin/truffle-upgrades": "^1.20.1",
     "dotenv": "^16.3.1"
