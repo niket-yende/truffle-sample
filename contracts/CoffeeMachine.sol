@@ -10,7 +10,7 @@ pragma solidity ^0.8.19;
     Other requirements: owner should be able to set the milkUnitPrice, concUnitPrice & cupPrice
     function buyCoffee should check if the combination of milkPerc & concPerc adds up to 100
  */
-contract COffeeMachine {
+contract CoffeeMachine {
     address private immutable owner;
     uint private milkUnitPrice;
     uint private concUnitPrice;
