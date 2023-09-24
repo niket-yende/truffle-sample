@@ -12,9 +12,9 @@ pragma solidity ^0.8.19;
  */
 contract CoffeeMachine {
     address private immutable owner;
-    uint private milkUnitPrice;
-    uint private concUnitPrice;
-    uint private cupPrice;
+    uint public milkUnitPrice;
+    uint public concUnitPrice;
+    uint public cupPrice;
 
     constructor() {
         owner = msg.sender;

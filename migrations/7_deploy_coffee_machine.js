@@ -5,4 +5,7 @@ module.exports = async function(deployer) {
 
   const coffeeMachine = await CoffeeMachine.deployed();
   console.log('Coffee machine contract address: ', coffeeMachine.address);
+
+  // Set the initial properties
+  await coffeeMachine.init(30, 60, 100);
 }
