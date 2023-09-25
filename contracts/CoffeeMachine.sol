@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 /**
     Implement a smart contract for a coffee machine.
@@ -11,6 +12,7 @@ pragma solidity ^0.8.19;
     function buyCoffee should check if the combination of milkPerc & concPerc adds up to 100
  */
 contract CoffeeMachine {
+    using SafeMath for uint;
     address private immutable owner;
     uint public milkUnitPrice;
     uint public concUnitPrice;
@@ -32,7 +34,7 @@ contract CoffeeMachine {
     }
 
     function buyCoffee(uint _percMilk, uint _percConc, bool isRefill) external view returns (uint) {
-        uint totalPerc = _percMilk + _percConc;
+        uint totalPerc = SafeMath.add(_percMilk, _percConc);
         require(totalPerc <= 100, "Total quantities must be within the limit");
 
         // local cache
@@ -41,10 +43,13 @@ contract CoffeeMachine {
         uint _cupPrice = cupPrice;
 
         // refill coffee cup
-        uint _totalBill = (_percMilk * _milkUnitPrice) + (_percConc * _concUnitPrice);
+        // uint _totalBill = (_percMilk * _milkUnitPrice) + (_percConc * _concUnitPrice);
+        uint calculationA = SafeMath.mul(_percMilk, _milkUnitPrice);
+        uint calculationB = SafeMath.mul(_percConc, _concUnitPrice);
+        uint _totalBill = SafeMath.add(calculationA, calculationB);
         if(!isRefill) {
             // buy a fresh coffee cup
-            _totalBill += _cupPrice; 
+            _totalBill = SafeMath.add(_totalBill, _cupPrice); 
         }
 
         return _totalBill;
