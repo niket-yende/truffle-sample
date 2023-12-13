@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 contract ElementStore {
-    address private owner;
+    address private immutable owner;
     uint private sequence;    
 
     enum Type {
